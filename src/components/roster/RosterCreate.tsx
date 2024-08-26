@@ -4,15 +4,18 @@ import { setAt } from "@/utils/array";
 
 type RosterCreateProps = {
   players?: string[];
-  onSubmit?: (players: string[]) => void;
+  onSubmit: (players: string[]) => void;
 };
 
-export function RosterCreate({ players: initPlayers }: RosterCreateProps) {
+export function RosterCreate({
+  players: initPlayers,
+  onSubmit,
+}: RosterCreateProps) {
   const [players, setPlayers] = useState(initPlayers ?? ["", "", "", ""]);
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    console.log(players.filter(Boolean));
+    onSubmit(players.filter(Boolean));
   }
 
   return (

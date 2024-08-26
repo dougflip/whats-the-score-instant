@@ -1,5 +1,7 @@
 import "./App.css";
 
+import * as db from "./db/db";
+
 import { RosterCreate } from "@/components/roster/RosterCreate";
 
 // const APP_ID = "acddc6a6-5fad-43db-b9fc-9e29e476125c";
@@ -24,10 +26,11 @@ import { RosterCreate } from "@/components/roster/RosterCreate";
 // }
 
 function App() {
-
-  return (
-    <RosterCreate />
-  );
+  function handleRosterSubmit(players: string[]) {
+    const game = db.createGame(players);
+    console.log(game);
+  }
+  return <RosterCreate onSubmit={handleRosterSubmit} />;
 }
 
 export default App;

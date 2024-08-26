@@ -15,6 +15,13 @@ export type PlayerScoreUpdate = {
 };
 
 /**
+ * Creates a roster from a list of players.
+ */
+export function createRoster(players: string[]): Roster {
+  return players.map((name) => ({ name, scores: [] }));
+}
+
+/**
  * Adds a new player to the roster.
  *
  * In the future we might ensure that the player name is unique.
