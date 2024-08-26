@@ -7,8 +7,13 @@ export type Player = {
 
 export type Roster = Player[];
 
-export type PlayerScoreUpdate = {
+export type Game = {
+  id: string;
   roster: Roster;
+};
+
+export type PlayerScoreUpdate = {
+  game: Game;
   name: string;
   score: number;
   roundIndex: number;
@@ -50,14 +55,17 @@ export function movePlayer(roster: Roster, from: number, to: number): Roster {
  * Sets the score of a player at a given round index.
  */
 export function setPlayerScore({
-  roster,
+  game,
   name,
   score,
   roundIndex,
-}: PlayerScoreUpdate): Roster {
-  return mapBy(
-    roster,
-    (x) => x.name === name,
-    (x) => ({ ...x, scores: setAt(x.scores, roundIndex, score) }),
-  );
+}: PlayerScoreUpdate): Game {
+  return {
+    ...game,
+    roster: mapBy(
+      game.roster,
+      (x) => x.name === name,
+      (x) => ({ ...x, scores: setAt(x.scores, roundIndex, score) }),
+    ),
+  };
 }

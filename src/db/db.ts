@@ -1,15 +1,15 @@
-import { Roster, createRoster } from "@/core/roster/roster";
+import {
+  Game,
+  PlayerScoreUpdate,
+  createRoster,
+  setPlayerScore,
+} from "@/core/game/game";
 import { id, init, tx } from "@instantdb/react";
 
 const APP_ID = "acddc6a6-5fad-43db-b9fc-9e29e476125c";
 
 type Schema = {
   games: Game;
-};
-
-type Game = {
-  id: string;
-  roster: Roster;
 };
 
 export const db = init<Schema>({ appId: APP_ID });
@@ -25,4 +25,11 @@ export function createGame(players: string[]): Game {
   };
   db.transact(tx.games[game.id].update(game));
   return game;
+}
+
+/**
+ * Updates the score of a player in a game.
+ */
+export function updatePlayerScore(update: PlayerScoreUpdate): void {
+  db.transact(tx.games[update.game.id].update(setPlayerScore(update)));
 }

@@ -4,7 +4,7 @@ import {
   movePlayer,
   removePlayer,
   setPlayerScore,
-} from "@/core/roster";
+} from "@/core/game";
 import { describe, expect, it } from "vitest";
 
 function testRoster(): Roster {
