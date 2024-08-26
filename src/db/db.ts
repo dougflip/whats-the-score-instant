@@ -4,7 +4,7 @@ import { id, init, tx } from "@instantdb/react";
 const APP_ID = "acddc6a6-5fad-43db-b9fc-9e29e476125c";
 
 type Schema = {
-  games: Game[];
+  games: Game;
 };
 
 type Game = {
@@ -12,7 +12,7 @@ type Game = {
   roster: Roster;
 };
 
-const db = init<Schema>({ appId: APP_ID });
+export const db = init<Schema>({ appId: APP_ID });
 
 /**
  * Creates and commits a new `Game` to the database.

@@ -1,36 +1,25 @@
 import "./App.css";
 
-import * as db from "./db/db";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
 
-import { RosterCreate } from "@/components/roster/RosterCreate";
+import { routeTree } from "@/routeTree.gen";
 
-// const APP_ID = "acddc6a6-5fad-43db-b9fc-9e29e476125c";
+const router = createRouter({
+  routeTree,
+});
 
-// type Schema = {
-//   games: Game[];
-// };
-
-// type Game = {
-//   id: string | number;
-//   roster: Roster;
-// };
-
-// const db = init<Schema>({ appId: APP_ID });
-
-// function addToRoster(name: string) {
-//   db.transact(
-//     tx.games["60ab3893-35e5-49d3-ad1e-f173a7436285"].update({
-//       roster: addPlayer([], name),
-//     }),
-//   );
-// }
+/**
+ * This provides typing for the router across the app.
+ * https://tanstack.com/router/latest/docs/framework/react/guide/type-safety#exported-hooks-components-and-utilities
+ */
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
 
 function App() {
-  function handleRosterSubmit(players: string[]) {
-    const game = db.createGame(players);
-    console.log(game);
-  }
-  return <RosterCreate onSubmit={handleRosterSubmit} />;
+  return <RouterProvider router={router} />;
 }
 
 export default App;
