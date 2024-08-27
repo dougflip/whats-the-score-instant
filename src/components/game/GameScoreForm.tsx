@@ -11,6 +11,7 @@ type GameScoreFormProps = {
   game: Game;
   roundIndex: number;
   playerIndex: number;
+  initialScore: number | null;
   onScore: (data: PlayerScoreUpdate) => void;
   onPreviousClick: (nextTurn: GameTurn) => void;
 };
@@ -19,10 +20,11 @@ export function GameScoreForm({
   game,
   playerIndex,
   roundIndex,
+  initialScore,
   onScore,
   onPreviousClick,
 }: GameScoreFormProps) {
-  const [score, setScore] = useState("");
+  const [score, setScore] = useState(initialScore?.toString() ?? "");
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -39,6 +41,7 @@ export function GameScoreForm({
     <form onSubmit={handleSubmit}>
       Round {roundIndex + 1} score for {game.roster[playerIndex].name}:
       <input
+        required
         type="text"
         value={score}
         onChange={(e) => setScore(e.target.value)}

@@ -79,6 +79,9 @@ export function setPlayerScore({
   };
 }
 
+/**
+ * Gets the next turn in the game.
+ */
 export function getNextTurn(
   game: Game,
   playerIndex: number,
@@ -98,6 +101,9 @@ export function getNextTurn(
   };
 }
 
+/**
+ * Gets the previous turn in the game.
+ */
 export function getPreviousTurn(
   game: Game,
   playerIndex: number,
@@ -115,4 +121,14 @@ export function getPreviousTurn(
     roundIndex: currentRoundIndex,
     playerIndex: playerIndex - 1,
   };
+}
+
+/**
+ * Gets the score of a specific turn for a plyer.
+ */
+export function getScoreForTurn(
+  game: Game,
+  { playerIndex, roundIndex }: GameTurn,
+): number | null {
+  return game.roster[playerIndex]?.scores[roundIndex] ?? null;
 }

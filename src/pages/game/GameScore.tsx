@@ -1,4 +1,9 @@
-import { GameTurn, PlayerScoreUpdate, getNextTurn } from "@/core/game";
+import {
+  GameTurn,
+  PlayerScoreUpdate,
+  getNextTurn,
+  getScoreForTurn,
+} from "@/core/game";
 import { updatePlayerScore, useGame } from "@/db/db";
 
 import { GameScoreForm } from "@/components/game/GameScoreForm";
@@ -34,9 +39,11 @@ export function GameScore() {
     <div>
       <h1>Game {gameId}</h1>
       <GameScoreForm
+        key={`${currentTurn.playerIndex}-${currentTurn.roundIndex}`}
         game={data.games[0]}
         playerIndex={currentTurn.playerIndex}
         roundIndex={currentTurn.roundIndex}
+        initialScore={getScoreForTurn(data.games[0], currentTurn)}
         onScore={handleScore}
         onPreviousClick={handlePreviousClick}
       />
