@@ -1,9 +1,4 @@
-import {
-  Game,
-  GameTurn,
-  PlayerScoreUpdate,
-  getPreviousTurn,
-} from "@/core/game";
+import { Game, PlayerScoreUpdate, getPreviousTurn } from "@/core/game";
 
 import { useState } from "react";
 
@@ -13,7 +8,7 @@ type GameScoreFormProps = {
   playerIndex: number;
   initialScore: number | null;
   onScore: (data: PlayerScoreUpdate) => void;
-  onPreviousClick: (nextTurn: GameTurn) => void;
+  onPreviousClick: (gameUpdate: Game) => void;
 };
 
 export function GameScoreForm({
@@ -55,7 +50,10 @@ export function GameScoreForm({
         type="button"
         disabled={roundIndex === 0 && playerIndex === 0}
         onClick={() =>
-          onPreviousClick(getPreviousTurn({ game, playerIndex, roundIndex }))
+          onPreviousClick({
+            ...game,
+            turn: getPreviousTurn({ game, playerIndex, roundIndex }),
+          })
         }
       >
         Previous

@@ -1,22 +1,17 @@
 import {
-  GameTurn,
+  Game,
   PlayerScoreUpdate,
-  getNextTurn,
   getScoreForTurn,
+  setPlayerScore,
 } from "@/core/game";
-import { updatePlayerScore, useGame } from "@/db/db";
+import { updateGame, useGame } from "@/db/db";
 
 import { GameScoreForm } from "@/components/game/GameScoreForm";
 import { GameScoreTable } from "@/components/game/GameScoreTable";
 import { useParams } from "@tanstack/react-router";
-import { useState } from "react";
 
 export function GameScore() {
   const { gameId } = useParams({ from: "/games/$gameId" });
-  const [currentTurn, setCurrentTurn] = useState<GameTurn>({
-    roundIndex: 0,
-    playerIndex: 0,
-  });
   const { data, error, isLoading } = useGame(gameId);
 
   if (isLoading || !data) {
@@ -28,29 +23,30 @@ export function GameScore() {
   }
 
   function handleScore(data: PlayerScoreUpdate) {
-    updatePlayerScore(data);
-    setCurrentTurn(getNextTurn(data));
+    updateGame(setPlayerScore(data));
   }
 
-  function handlePreviousClick(nextTurn: GameTurn) {
-    setCurrentTurn(nextTurn);
+  function handlePreviousClick(gameUpdate: Game) {
+    updateGame(gameUpdate);
   }
+
+  const game = data.games[0];
 
   return (
     <div>
       <GameScoreForm
-        key={`${currentTurn.playerIndex}-${currentTurn.roundIndex}`}
+        key={`${game.turn.playerIndex}-${game.turn.roundIndex}`}
         game={data.games[0]}
-        playerIndex={currentTurn.playerIndex}
-        roundIndex={currentTurn.roundIndex}
-        initialScore={getScoreForTurn(data.games[0], currentTurn)}
+        playerIndex={game.turn.playerIndex}
+        roundIndex={game.turn.roundIndex}
+        initialScore={getScoreForTurn(game)}
         onScore={handleScore}
         onPreviousClick={handlePreviousClick}
       />
       <GameScoreTable
         game={data.games[0]}
-        playerIndex={currentTurn.playerIndex}
-        roundIndex={currentTurn.roundIndex}
+        playerIndex={game.turn.playerIndex}
+        roundIndex={game.turn.roundIndex}
       />
     </div>
   );

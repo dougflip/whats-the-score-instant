@@ -12,7 +12,10 @@ export type Roster = Player[];
 export type Game = {
   id: string;
   roster: Roster;
+  turn: GameTurn;
 };
+
+export type GameCreate = Omit<Game, "id">;
 
 /**
  * Represents a specific turn in a game.
@@ -37,6 +40,17 @@ export type GetTurnArgs = GameTurn & {
  */
 export function createRoster(players: string[]): Roster {
   return players.map((name) => ({ name, scores: [] }));
+}
+
+/**
+ * Creates a new game with the given players
+ * and defaults the turn to the first player in the first round.
+ */
+export function createGame(players: string[]): GameCreate {
+  return {
+    roster: createRoster(players),
+    turn: { roundIndex: 0, playerIndex: 0 },
+  };
 }
 
 /**
@@ -80,6 +94,7 @@ export function setPlayerScore({
       (_, i) => i === playerIndex,
       (x) => ({ ...x, scores: setAt(x.scores, roundIndex, score) }),
     ),
+    turn: getNextTurn({ game, playerIndex, roundIndex }),
   };
 }
 
@@ -128,12 +143,10 @@ export function getPreviousTurn({
 }
 
 /**
- * Gets the score of a specific turn for a plyer.
+ * Gets the score for the turn associated with the game.s
  */
-export function getScoreForTurn(
-  game: Game,
-  { playerIndex, roundIndex }: GameTurn,
-): number | null {
+export function getScoreForTurn(game: Game): number | null {
+  const { playerIndex, roundIndex } = game.turn;
   return game.roster[playerIndex]?.scores[roundIndex] ?? null;
 }
 
@@ -143,7 +156,7 @@ export function getScoreForTurn(
  */
 export function mapScores<T>(
   game: Game,
-  mapFn: (round: number, scores: number[]) => T,
+  mapFn: (round: number, scores: (number | null)[]) => T,
 ): T[] {
   const numRounds = Math.max(
     ...game.roster.map((player) => player.scores.length),
@@ -151,7 +164,7 @@ export function mapScores<T>(
   return range(0, numRounds).map((roundIndex) =>
     mapFn(
       roundIndex,
-      game.roster.map((player) => player.scores[roundIndex] ?? 0),
+      game.roster.map((player) => player.scores[roundIndex] ?? null),
     ),
   );
 }

@@ -35,7 +35,7 @@ export function GameScoreTable({
                     roundIndex === rIndex && playerIndex === sIndex,
                 })}
               >
-                {score}
+                {score ?? "--"}
               </td>
             ))}
           </tr>

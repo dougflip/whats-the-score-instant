@@ -1,9 +1,4 @@
-import {
-  Game,
-  PlayerScoreUpdate,
-  createRoster,
-  setPlayerScore,
-} from "@/core/game/game";
+import { Game, GameCreate } from "@/core/game/game";
 import { id, init, tx } from "@instantdb/react";
 
 const APP_ID = "acddc6a6-5fad-43db-b9fc-9e29e476125c";
@@ -22,10 +17,10 @@ export function useGame(gameId: string) {
  * Creates and commits a new `Game` to the database.
  * Returns the created `Game`.
  */
-export function createGame(players: string[]): Game {
+export function createGame(gameCreate: GameCreate): Game {
   const game: Game = {
+    ...gameCreate,
     id: id(),
-    roster: createRoster(players),
   };
   db.transact(tx.games[game.id].update(game));
   return game;
@@ -34,6 +29,7 @@ export function createGame(players: string[]): Game {
 /**
  * Updates the score of a player in a game.
  */
-export function updatePlayerScore(update: PlayerScoreUpdate): void {
-  db.transact(tx.games[update.game.id].update(setPlayerScore(update)));
+export function updateGame(gameUpdate: Game): Game {
+  db.transact(tx.games[gameUpdate.id].update(gameUpdate));
+  return gameUpdate;
 }
