@@ -30,7 +30,8 @@ export function GameScoreForm({
     event.preventDefault();
     onScore({
       game,
-      turn: { playerIndex, roundIndex },
+      playerIndex,
+      roundIndex,
       score: Number(score),
     });
     setScore("");
@@ -50,9 +51,7 @@ export function GameScoreForm({
         type="button"
         disabled={roundIndex === 0 && playerIndex === 0}
         onClick={() =>
-          onPreviousClick(
-            getPreviousTurn({ game, turn: { playerIndex, roundIndex } }),
-          )
+          onPreviousClick(getPreviousTurn({ game, playerIndex, roundIndex }))
         }
       >
         Previous

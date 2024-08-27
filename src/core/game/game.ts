@@ -12,12 +12,6 @@ export type Game = {
   roster: Roster;
 };
 
-export type PlayerScoreUpdate = {
-  game: Game;
-  turn: GameTurn;
-  score: number;
-};
-
 /**
  * Represents a specific turn in a game.
  * This is a combination of a round index and a player index.
@@ -27,9 +21,13 @@ export type GameTurn = {
   playerIndex: number;
 };
 
-export type GetTurnArgs = {
+export type PlayerScoreUpdate = GameTurn & {
   game: Game;
-  turn: GameTurn;
+  score: number;
+};
+
+export type GetTurnArgs = GameTurn & {
+  game: Game;
 };
 
 /**
@@ -67,13 +65,18 @@ export function movePlayer(roster: Roster, from: number, to: number): Roster {
 /**
  * Sets the score of a player at a given round index.
  */
-export function setPlayerScore({ game, turn, score }: PlayerScoreUpdate): Game {
+export function setPlayerScore({
+  game,
+  playerIndex,
+  roundIndex,
+  score,
+}: PlayerScoreUpdate): Game {
   return {
     ...game,
     roster: mapBy(
       game.roster,
-      (_, i) => i === turn.playerIndex,
-      (x) => ({ ...x, scores: setAt(x.scores, turn.roundIndex, score) }),
+      (_, i) => i === playerIndex,
+      (x) => ({ ...x, scores: setAt(x.scores, roundIndex, score) }),
     ),
   };
 }
@@ -83,7 +86,8 @@ export function setPlayerScore({ game, turn, score }: PlayerScoreUpdate): Game {
  */
 export function getNextTurn({
   game,
-  turn: { playerIndex, roundIndex },
+  playerIndex,
+  roundIndex,
 }: GetTurnArgs): GameTurn {
   // if we you are the last user in the roster, go back to the first user
   if (playerIndex === game.roster.length - 1) {
@@ -104,7 +108,8 @@ export function getNextTurn({
  */
 export function getPreviousTurn({
   game,
-  turn: { playerIndex, roundIndex },
+  playerIndex,
+  roundIndex,
 }: GetTurnArgs): GameTurn {
   // if we you are the first user in the roster, go back to the last user
   if (playerIndex === 0) {
