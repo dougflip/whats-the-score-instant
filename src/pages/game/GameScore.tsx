@@ -28,7 +28,7 @@ export function GameScore() {
 
   function handleScore(data: PlayerScoreUpdate) {
     updatePlayerScore(data);
-    setCurrentTurn(getNextTurn(data.game, data.playerIndex, data.roundIndex));
+    setCurrentTurn(getNextTurn(data));
   }
 
   function handlePreviousClick(nextTurn: GameTurn) {

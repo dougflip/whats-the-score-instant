@@ -14,9 +14,8 @@ export type Game = {
 
 export type PlayerScoreUpdate = {
   game: Game;
-  playerIndex: number;
+  turn: GameTurn;
   score: number;
-  roundIndex: number;
 };
 
 /**
@@ -26,6 +25,11 @@ export type PlayerScoreUpdate = {
 export type GameTurn = {
   roundIndex: number;
   playerIndex: number;
+};
+
+export type GetTurnArgs = {
+  game: Game;
+  turn: GameTurn;
 };
 
 /**
@@ -63,18 +67,13 @@ export function movePlayer(roster: Roster, from: number, to: number): Roster {
 /**
  * Sets the score of a player at a given round index.
  */
-export function setPlayerScore({
-  game,
-  playerIndex,
-  score,
-  roundIndex,
-}: PlayerScoreUpdate): Game {
+export function setPlayerScore({ game, turn, score }: PlayerScoreUpdate): Game {
   return {
     ...game,
     roster: mapBy(
       game.roster,
-      (_, i) => i === playerIndex,
-      (x) => ({ ...x, scores: setAt(x.scores, roundIndex, score) }),
+      (_, i) => i === turn.playerIndex,
+      (x) => ({ ...x, scores: setAt(x.scores, turn.roundIndex, score) }),
     ),
   };
 }
@@ -82,21 +81,20 @@ export function setPlayerScore({
 /**
  * Gets the next turn in the game.
  */
-export function getNextTurn(
-  game: Game,
-  playerIndex: number,
-  currentRoundIndex: number,
-): GameTurn {
+export function getNextTurn({
+  game,
+  turn: { playerIndex, roundIndex },
+}: GetTurnArgs): GameTurn {
   // if we you are the last user in the roster, go back to the first user
   if (playerIndex === game.roster.length - 1) {
     return {
-      roundIndex: currentRoundIndex + 1,
+      roundIndex: roundIndex + 1,
       playerIndex: 0,
     };
   }
 
   return {
-    roundIndex: currentRoundIndex,
+    roundIndex,
     playerIndex: playerIndex + 1,
   };
 }
@@ -104,21 +102,20 @@ export function getNextTurn(
 /**
  * Gets the previous turn in the game.
  */
-export function getPreviousTurn(
-  game: Game,
-  playerIndex: number,
-  currentRoundIndex: number,
-): GameTurn {
+export function getPreviousTurn({
+  game,
+  turn: { playerIndex, roundIndex },
+}: GetTurnArgs): GameTurn {
   // if we you are the first user in the roster, go back to the last user
   if (playerIndex === 0) {
     return {
-      roundIndex: currentRoundIndex - 1,
+      roundIndex: roundIndex - 1,
       playerIndex: game.roster.length - 1,
     };
   }
 
   return {
-    roundIndex: currentRoundIndex,
+    roundIndex,
     playerIndex: playerIndex - 1,
   };
 }

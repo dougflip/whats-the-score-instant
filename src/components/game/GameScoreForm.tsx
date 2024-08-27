@@ -30,8 +30,7 @@ export function GameScoreForm({
     event.preventDefault();
     onScore({
       game,
-      playerIndex,
-      roundIndex,
+      turn: { playerIndex, roundIndex },
       score: Number(score),
     });
     setScore("");
@@ -42,6 +41,7 @@ export function GameScoreForm({
       Round {roundIndex + 1} score for {game.roster[playerIndex].name}:
       <input
         required
+        autoFocus
         type="text"
         value={score}
         onChange={(e) => setScore(e.target.value)}
@@ -50,7 +50,9 @@ export function GameScoreForm({
         type="button"
         disabled={roundIndex === 0 && playerIndex === 0}
         onClick={() =>
-          onPreviousClick(getPreviousTurn(game, playerIndex, roundIndex))
+          onPreviousClick(
+            getPreviousTurn({ game, turn: { playerIndex, roundIndex } }),
+          )
         }
       >
         Previous
