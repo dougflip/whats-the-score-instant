@@ -39,14 +39,18 @@ export function GameScoreForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      Round {roundIndex + 1} score for {game.roster[playerIndex].name}:
-      <input
-        required
-        autoFocus
-        type="text"
-        value={score}
-        onChange={(e) => setScore(e.target.value)}
-      />
+      <h3>
+        Round {roundIndex + 1} score for {game.roster[playerIndex].name}
+      </h3>
+      <div>
+        <input
+          required
+          autoFocus
+          type="number"
+          value={score}
+          onChange={(e) => setScore(e.target.value)}
+        />
+      </div>
       <button
         type="button"
         disabled={roundIndex === 0 && playerIndex === 0}

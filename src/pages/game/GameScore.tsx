@@ -37,7 +37,6 @@ export function GameScore() {
 
   return (
     <div>
-      <h1>Game {gameId}</h1>
       <GameScoreForm
         key={`${currentTurn.playerIndex}-${currentTurn.roundIndex}`}
         game={data.games[0]}
