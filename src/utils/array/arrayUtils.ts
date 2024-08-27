@@ -10,8 +10,8 @@ export function setAt<T>(arr: T[], index: number, value: T): T[] {
  */
 export function mapBy<T>(
   xs: T[],
-  predicateFn: (x: T) => boolean,
+  predicateFn: (x: T, i: number) => boolean,
   mapFn: (x: T) => T,
 ): T[] {
-  return xs.map((x) => (predicateFn(x) ? mapFn(x) : x));
+  return xs.map((x, i) => (predicateFn(x, i) ? mapFn(x) : x));
 }

@@ -1,13 +1,16 @@
 import { GameTurn, PlayerScoreUpdate, getNextTurn } from "@/core/game";
 import { updatePlayerScore, useGame } from "@/db/db";
-import { useEffect, useState } from "react";
 
 import { GameScoreForm } from "@/components/game/GameScoreForm";
 import { useParams } from "@tanstack/react-router";
+import { useState } from "react";
 
 export function GameScore() {
   const { gameId } = useParams({ from: "/games/$gameId" });
-  const [round, setRound] = useState<GameTurn>({ roundIndex: 0, name: "" });
+  const [currentTurn, setCurrentTurn] = useState<GameTurn>({
+    roundIndex: 0,
+    playerIndex: 0,
+  });
   const { data, error, isLoading } = useGame(gameId);
 
   if (isLoading || !data) {
@@ -20,19 +23,22 @@ export function GameScore() {
 
   function handleScore(data: PlayerScoreUpdate) {
     updatePlayerScore(data);
-    setRound(getNextTurn(data.game, data.name, data.roundIndex));
+    setCurrentTurn(getNextTurn(data.game, data.playerIndex, data.roundIndex));
   }
 
-  console.log(data);
+  function handlePreviousClick(nextTurn: GameTurn) {
+    setCurrentTurn(nextTurn);
+  }
 
   return (
     <div>
       <h1>Game {gameId}</h1>
       <GameScoreForm
         game={data.games[0]}
-        name={round.name || data.games[0].roster[0].name}
-        roundIndex={round.roundIndex}
+        playerIndex={currentTurn.playerIndex}
+        roundIndex={currentTurn.roundIndex}
         onScore={handleScore}
+        onPreviousClick={handlePreviousClick}
       />
     </div>
   );

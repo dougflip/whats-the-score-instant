@@ -1,19 +1,26 @@
-import { Game, PlayerScoreUpdate } from "@/core/game";
+import {
+  Game,
+  GameTurn,
+  PlayerScoreUpdate,
+  getPreviousTurn,
+} from "@/core/game";
 
 import { useState } from "react";
 
 type GameScoreFormProps = {
   game: Game;
   roundIndex: number;
-  name: string;
+  playerIndex: number;
   onScore: (data: PlayerScoreUpdate) => void;
+  onPreviousClick: (nextTurn: GameTurn) => void;
 };
 
 export function GameScoreForm({
   game,
-  name,
+  playerIndex,
   roundIndex,
   onScore,
+  onPreviousClick,
 }: GameScoreFormProps) {
   const [score, setScore] = useState("");
 
@@ -21,7 +28,7 @@ export function GameScoreForm({
     event.preventDefault();
     onScore({
       game,
-      name,
+      playerIndex,
       roundIndex,
       score: Number(score),
     });
@@ -30,12 +37,21 @@ export function GameScoreForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      Round {roundIndex + 1} score for {name}:
+      Round {roundIndex + 1} score for {game.roster[playerIndex].name}:
       <input
         type="text"
         value={score}
         onChange={(e) => setScore(e.target.value)}
       />
+      <button
+        type="button"
+        disabled={roundIndex === 0 && playerIndex === 0}
+        onClick={() =>
+          onPreviousClick(getPreviousTurn(game, playerIndex, roundIndex))
+        }
+      >
+        Previous
+      </button>
     </form>
   );
 }

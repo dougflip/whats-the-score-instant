@@ -14,15 +14,18 @@ export type Game = {
 
 export type PlayerScoreUpdate = {
   game: Game;
-  name: string;
+  playerIndex: number;
   score: number;
   roundIndex: number;
 };
 
+/**
+ * Represents a specific turn in a game.
+ * This is a combination of a round index and a player index.
+ */
 export type GameTurn = {
   roundIndex: number;
-  // Guessing "name" will make sense as player index across the board
-  name: string;
+  playerIndex: number;
 };
 
 /**
@@ -62,7 +65,7 @@ export function movePlayer(roster: Roster, from: number, to: number): Roster {
  */
 export function setPlayerScore({
   game,
-  name,
+  playerIndex,
   score,
   roundIndex,
 }: PlayerScoreUpdate): Game {
@@ -70,7 +73,7 @@ export function setPlayerScore({
     ...game,
     roster: mapBy(
       game.roster,
-      (x) => x.name === name,
+      (_, i) => i === playerIndex,
       (x) => ({ ...x, scores: setAt(x.scores, roundIndex, score) }),
     ),
   };
@@ -78,25 +81,38 @@ export function setPlayerScore({
 
 export function getNextTurn(
   game: Game,
-  name: string,
+  playerIndex: number,
   currentRoundIndex: number,
 ): GameTurn {
-  const currentUserIndex = game.roster.findIndex(
-    (player) => player.name === name,
-  );
-
-  console.log(currentUserIndex);
-
   // if we you are the last user in the roster, go back to the first user
-  if (currentUserIndex === game.roster.length - 1) {
+  if (playerIndex === game.roster.length - 1) {
     return {
       roundIndex: currentRoundIndex + 1,
-      name: game.roster[0].name,
+      playerIndex: 0,
     };
   }
 
   return {
     roundIndex: currentRoundIndex,
-    name: game.roster[currentUserIndex + 1].name,
+    playerIndex: playerIndex + 1,
+  };
+}
+
+export function getPreviousTurn(
+  game: Game,
+  playerIndex: number,
+  currentRoundIndex: number,
+): GameTurn {
+  // if we you are the first user in the roster, go back to the last user
+  if (playerIndex === 0) {
+    return {
+      roundIndex: currentRoundIndex - 1,
+      playerIndex: game.roster.length - 1,
+    };
+  }
+
+  return {
+    roundIndex: currentRoundIndex,
+    playerIndex: playerIndex - 1,
   };
 }
