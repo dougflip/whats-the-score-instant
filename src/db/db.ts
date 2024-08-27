@@ -14,6 +14,10 @@ type Schema = {
 
 export const db = init<Schema>({ appId: APP_ID });
 
+export function useGame(gameId: string) {
+  return db.useQuery({ games: { $: { where: { id: gameId } } } });
+}
+
 /**
  * Creates and commits a new `Game` to the database.
  * Returns the created `Game`.

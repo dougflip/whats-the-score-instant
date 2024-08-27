@@ -1,17 +1,16 @@
-import { db, updatePlayerScore } from "@/db/db";
+import { GameTurn, PlayerScoreUpdate, getNextTurn } from "@/core/game";
+import { updatePlayerScore, useGame } from "@/db/db";
+import { useEffect, useState } from "react";
 
+import { GameScoreForm } from "@/components/game/GameScoreForm";
 import { useParams } from "@tanstack/react-router";
-import { useState } from "react";
 
 export function GameScore() {
   const { gameId } = useParams({ from: "/games/$gameId" });
-  const [score, setScore] = useState("");
+  const [round, setRound] = useState<GameTurn>({ roundIndex: 0, name: "" });
+  const { data, error, isLoading } = useGame(gameId);
 
-  const { data, error, isLoading } = db.useQuery({
-    games: { $: { where: { id: gameId } } },
-  });
-
-  if (isLoading) {
+  if (isLoading || !data) {
     return "loading...";
   }
 
@@ -19,27 +18,22 @@ export function GameScore() {
     return "error!";
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    updatePlayerScore({
-      game: data.games[0],
-      name: data.games[0].roster[0].name,
-      score,
-      roundIndex: 0,
-    });
+  function handleScore(data: PlayerScoreUpdate) {
+    updatePlayerScore(data);
+    setRound(getNextTurn(data.game, data.name, data.roundIndex));
   }
+
+  console.log(data);
 
   return (
     <div>
       <h1>Game {gameId}</h1>
-      <form onSubmit={handleSubmit}>
-        Round 1 score for {data.games[0].roster[0].name}:
-        <input
-          type="text"
-          value={score}
-          onChange={(e) => setScore(e.target.value)}
-        />
-      </form>
+      <GameScoreForm
+        game={data.games[0]}
+        name={round.name || data.games[0].roster[0].name}
+        roundIndex={round.roundIndex}
+        onScore={handleScore}
+      />
     </div>
   );
 }

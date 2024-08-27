@@ -19,6 +19,12 @@ export type PlayerScoreUpdate = {
   roundIndex: number;
 };
 
+export type GameTurn = {
+  roundIndex: number;
+  // Guessing "name" will make sense as player index across the board
+  name: string;
+};
+
 /**
  * Creates a roster from a list of players.
  */
@@ -67,5 +73,30 @@ export function setPlayerScore({
       (x) => x.name === name,
       (x) => ({ ...x, scores: setAt(x.scores, roundIndex, score) }),
     ),
+  };
+}
+
+export function getNextTurn(
+  game: Game,
+  name: string,
+  currentRoundIndex: number,
+): GameTurn {
+  const currentUserIndex = game.roster.findIndex(
+    (player) => player.name === name,
+  );
+
+  console.log(currentUserIndex);
+
+  // if we you are the last user in the roster, go back to the first user
+  if (currentUserIndex === game.roster.length - 1) {
+    return {
+      roundIndex: currentRoundIndex + 1,
+      name: game.roster[0].name,
+    };
+  }
+
+  return {
+    roundIndex: currentRoundIndex,
+    name: game.roster[currentUserIndex + 1].name,
   };
 }
