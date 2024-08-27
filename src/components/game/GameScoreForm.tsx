@@ -40,7 +40,7 @@ export function GameScoreForm({
   return (
     <form onSubmit={handleSubmit}>
       <h3>
-        Round {roundIndex + 1} score for {game.roster[playerIndex].name}
+        Round {roundIndex + 1}: {game.roster[playerIndex].name}
       </h3>
       <div>
         <input
