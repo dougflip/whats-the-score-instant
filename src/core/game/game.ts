@@ -1,5 +1,7 @@
 import { mapBy, setAt } from "@/utils/array";
 
+import { range } from "remeda";
+
 export type Player = {
   name: string;
   scores: number[];
@@ -133,4 +135,23 @@ export function getScoreForTurn(
   { playerIndex, roundIndex }: GameTurn,
 ): number | null {
   return game.roster[playerIndex]?.scores[roundIndex] ?? null;
+}
+
+/**
+ * Maps over rounds and provides scores array to the callback.
+ * Useful for rendering a table of scores.
+ */
+export function mapScores<T>(
+  game: Game,
+  mapFn: (round: number, scores: number[]) => T,
+): T[] {
+  const numRounds = Math.max(
+    ...game.roster.map((player) => player.scores.length),
+  );
+  return range(0, numRounds).map((roundIndex) =>
+    mapFn(
+      roundIndex,
+      game.roster.map((player) => player.scores[roundIndex] ?? 0),
+    ),
+  );
 }

@@ -7,6 +7,7 @@ import {
 import { updatePlayerScore, useGame } from "@/db/db";
 
 import { GameScoreForm } from "@/components/game/GameScoreForm";
+import { GameScoreTable } from "@/components/game/GameScoreTable";
 import { useParams } from "@tanstack/react-router";
 import { useState } from "react";
 
@@ -45,6 +46,11 @@ export function GameScore() {
         initialScore={getScoreForTurn(data.games[0], currentTurn)}
         onScore={handleScore}
         onPreviousClick={handlePreviousClick}
+      />
+      <GameScoreTable
+        game={data.games[0]}
+        playerIndex={currentTurn.playerIndex}
+        roundIndex={currentTurn.roundIndex}
       />
     </div>
   );
