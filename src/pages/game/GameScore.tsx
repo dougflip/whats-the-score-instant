@@ -22,8 +22,8 @@ export function GameScore() {
     return "error!";
   }
 
-  function handleScore(data: PlayerScoreUpdate) {
-    updateGame(setPlayerScore(data));
+  function handleScore({ game, score, turn }: PlayerScoreUpdate) {
+    updateGame(setPlayerScore(game, score, turn));
   }
 
   function handlePreviousClick(gameUpdate: Game) {
@@ -36,7 +36,7 @@ export function GameScore() {
     <div>
       <GameScoreForm
         key={`${game.turn.playerIndex}-${game.turn.roundIndex}`}
-        game={data.games[0]}
+        game={game}
         playerIndex={game.turn.playerIndex}
         roundIndex={game.turn.roundIndex}
         initialScore={getScoreForTurn(game)}
@@ -44,7 +44,7 @@ export function GameScore() {
         onPreviousClick={handlePreviousClick}
       />
       <GameScoreTable
-        game={data.games[0]}
+        game={game}
         playerIndex={game.turn.playerIndex}
         roundIndex={game.turn.roundIndex}
       />

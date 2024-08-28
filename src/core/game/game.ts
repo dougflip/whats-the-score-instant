@@ -27,9 +27,10 @@ export type GameTurn = {
   playerIndex: number;
 };
 
-export type PlayerScoreUpdate = GameTurn & {
+export type PlayerScoreUpdate = {
   game: Game;
   score: number;
+  turn: GameTurn;
 };
 
 /**
@@ -79,12 +80,11 @@ export function movePlayer(roster: Roster, from: number, to: number): Roster {
 /**
  * Sets the score of a player at a given round index.
  */
-export function setPlayerScore({
-  game,
-  playerIndex,
-  roundIndex,
-  score,
-}: PlayerScoreUpdate): Game {
+export function setPlayerScore(
+  game: Game,
+  score: number,
+  { playerIndex, roundIndex }: GameTurn = game.turn,
+): Game {
   return {
     ...game,
     roster: mapBy(

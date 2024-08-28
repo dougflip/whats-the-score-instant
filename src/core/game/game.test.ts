@@ -30,12 +30,7 @@ describe("game", () => {
   describe("setPlayerScore", () => {
     it("sets the score of a player at a given round index", () => {
       const game = createGame(["Alice", "Bob"]);
-      const updatedGame = setPlayerScore({
-        game,
-        playerIndex: 0,
-        roundIndex: 0,
-        score: 10,
-      });
+      const updatedGame = setPlayerScore(game, 10);
       expect(updatedGame.roster[0].scores).toEqual([10]);
     });
   });
@@ -77,11 +72,9 @@ describe("game", () => {
   describe("getScoreForTurn", () => {
     it("returns the score for the current turn", () => {
       const game = createGame(["Alice", "Bob"]);
-      const updatedGame = setPlayerScore({
-        game,
+      const updatedGame = setPlayerScore(game, 10, {
         playerIndex: 0,
         roundIndex: 0,
-        score: 10,
       });
       const score = getScoreForTurn(
         updatedGame,
@@ -94,11 +87,9 @@ describe("game", () => {
   describe("mapScores", () => {
     it("maps over the scores of the game", () => {
       const game = createGame(["Alice", "Bob"]);
-      const updatedGame = setPlayerScore({
-        game,
+      const updatedGame = setPlayerScore(game, 10, {
         playerIndex: 0,
         roundIndex: 0,
-        score: 10,
       });
       const scores = mapScores(updatedGame, (_, scores) => scores);
       expect(scores).toEqual([[10, null]]);
@@ -108,24 +99,9 @@ describe("game", () => {
   describe("getScoreTotals", () => {
     it("returns the total score for each player", () => {
       const game = createGame(["Alice", "Bob"]);
-      const updatedGame = setPlayerScore({
-        game,
-        playerIndex: 0,
-        roundIndex: 0,
-        score: 10,
-      });
-      const updatedGame2 = setPlayerScore({
-        game: updatedGame,
-        playerIndex: 1,
-        roundIndex: 0,
-        score: 20,
-      });
-      const updatedGame3 = setPlayerScore({
-        game: updatedGame2,
-        playerIndex: 0,
-        roundIndex: 1,
-        score: 30,
-      });
+      const updatedGame = setPlayerScore(game, 10);
+      const updatedGame2 = setPlayerScore(updatedGame, 20);
+      const updatedGame3 = setPlayerScore(updatedGame2, 30);
       const totals = getScoreTotals(updatedGame3);
       expect(totals).toEqual([40, 20]);
     });

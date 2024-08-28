@@ -25,9 +25,8 @@ export function GameScoreForm({
     event.preventDefault();
     onScore({
       game,
-      playerIndex,
-      roundIndex,
       score: Number(score),
+      turn: { playerIndex, roundIndex },
     });
     setScore("");
   }
