@@ -1,11 +1,16 @@
 import "./App.css";
 
-import { RouterProvider, createRouter } from "@tanstack/react-router";
+import {
+  RouterProvider,
+  createHashHistory,
+  createRouter,
+} from "@tanstack/react-router";
 
 import { routeTree } from "@/routeTree.gen";
 
 const router = createRouter({
   routeTree,
+  history: createHashHistory(),
 });
 
 /**
