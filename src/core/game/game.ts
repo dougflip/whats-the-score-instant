@@ -138,6 +138,13 @@ export function getPreviousTurn(
   };
 }
 
+export function setTurn(game: Game, turn: GameTurn): Game {
+  return {
+    ...game,
+    turn,
+  };
+}
+
 /**
  * Gets the score for the turn associated with the game.s
  */

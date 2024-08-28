@@ -1,8 +1,10 @@
 import {
   Game,
+  GameTurn,
   PlayerScoreUpdate,
   getScoreForTurn,
   setPlayerScore,
+  setTurn,
 } from "@/core/game";
 import { updateGame, useGame } from "@/db/db";
 
@@ -26,8 +28,8 @@ export function GameScore() {
     updateGame(setPlayerScore(game, score, turn));
   }
 
-  function handlePreviousClick(gameUpdate: Game) {
-    updateGame(gameUpdate);
+  function handleTurnClick(game: Game, turn: GameTurn) {
+    updateGame(setTurn(game, turn));
   }
 
   const game = data.games[0];
@@ -41,12 +43,12 @@ export function GameScore() {
         roundIndex={game.turn.roundIndex}
         initialScore={getScoreForTurn(game)}
         onScore={handleScore}
-        onPreviousClick={handlePreviousClick}
       />
       <GameScoreTable
         game={game}
         playerIndex={game.turn.playerIndex}
         roundIndex={game.turn.roundIndex}
+        onTurnClick={handleTurnClick}
       />
     </div>
   );

@@ -1,6 +1,6 @@
 import "@/components/game/GameScoreTable.css";
 
-import { Game, getScoreTotals, mapScores } from "@/core/game";
+import { Game, GameTurn, getScoreTotals, mapScores } from "@/core/game";
 
 import classNames from "classnames";
 
@@ -8,12 +8,14 @@ type GameScoreTableProps = {
   game: Game;
   playerIndex: number;
   roundIndex: number;
+  onTurnClick: (game: Game, turn: GameTurn) => void;
 };
 
 export function GameScoreTable({
   game,
   playerIndex,
   roundIndex,
+  onTurnClick,
 }: GameScoreTableProps) {
   return (
     <table className="game-score-table">
@@ -37,7 +39,20 @@ export function GameScoreTable({
                     roundIndex === rIndex && playerIndex === sIndex,
                 })}
               >
-                {score ?? "--"}
+                {score === null && "--"}
+                {score !== null && (
+                  <button
+                    className="link"
+                    onClick={() =>
+                      onTurnClick(game, {
+                        roundIndex: rIndex,
+                        playerIndex: sIndex,
+                      })
+                    }
+                  >
+                    {score}
+                  </button>
+                )}
               </td>
             ))}
           </tr>

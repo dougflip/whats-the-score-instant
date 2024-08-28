@@ -53,6 +53,15 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+button.link {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  color: #646cff;
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
