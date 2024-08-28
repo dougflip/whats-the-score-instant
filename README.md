@@ -1,50 +1,29 @@
-# React + TypeScript + Vite
+# What's the Score?
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React app to record the score of a game with rounds and players.
 
-Currently, two official plugins are available:
+## Background
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+We play [Farkle](https://en.wikipedia.org/wiki/Farkle) with friends over video chat.
+One person keeps score by hand and it is pretty tedious. It's also difficult for players
+on video to keep up with the current score since they can't see the scoresheet.
 
-## Expanding the ESLint configuration
+This app allows clients to connect to the same game (via game ID) and receive live
+updates of the score as the game progresses.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Local development
 
-- Configure the top-level `parserOptions` property like this:
+```sh
+# select the correct node version
+nvm use
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+# install deps
+npm install
+
+# start the dev server
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Tech
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+The realtime aspect is handled by [instantdb](https://www.instantdb.com/).
