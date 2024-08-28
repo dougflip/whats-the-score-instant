@@ -43,13 +43,13 @@ describe("game", () => {
   describe("getNextTurn", () => {
     it("returns the next turn", () => {
       const game = createGame(["Alice", "Bob"]);
-      const nextTurn = getNextTurn({ game, playerIndex: 0, roundIndex: 0 });
+      const nextTurn = getNextTurn(game);
       expect(nextTurn).toEqual({ playerIndex: 1, roundIndex: 0 });
     });
 
     it("returns the next turn when the round is complete", () => {
       const game = createGame(["Alice", "Bob"]);
-      const nextTurn = getNextTurn({ game, playerIndex: 1, roundIndex: 0 });
+      const nextTurn = getNextTurn(game, { playerIndex: 1, roundIndex: 0 });
       expect(nextTurn).toEqual({ playerIndex: 0, roundIndex: 1 });
     });
   });
@@ -57,8 +57,7 @@ describe("game", () => {
   describe("getPreviousTurn", () => {
     it("returns the previous turn", () => {
       const game = createGame(["Alice", "Bob"]);
-      const previousTurn = getPreviousTurn({
-        game,
+      const previousTurn = getPreviousTurn(game, {
         playerIndex: 1,
         roundIndex: 1,
       });
@@ -67,8 +66,7 @@ describe("game", () => {
 
     it("returns the previous turn when going to a previous round", () => {
       const game = createGame(["Alice", "Bob"]);
-      const previousTurn = getPreviousTurn({
-        game,
+      const previousTurn = getPreviousTurn(game, {
         playerIndex: 0,
         roundIndex: 1,
       });
@@ -87,7 +85,7 @@ describe("game", () => {
       });
       const score = getScoreForTurn(
         updatedGame,
-        getPreviousTurn({ game: updatedGame, playerIndex: 1, roundIndex: 0 }),
+        getPreviousTurn(updatedGame, { playerIndex: 1, roundIndex: 0 }),
       );
       expect(score).toEqual(10);
     });

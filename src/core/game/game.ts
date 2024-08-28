@@ -32,10 +32,6 @@ export type PlayerScoreUpdate = GameTurn & {
   score: number;
 };
 
-export type GetTurnArgs = GameTurn & {
-  game: Game;
-};
-
 /**
  * Creates a roster from a list of players.
  */
@@ -96,18 +92,17 @@ export function setPlayerScore({
       (_, i) => i === playerIndex,
       (x) => ({ ...x, scores: setAt(x.scores, roundIndex, score) }),
     ),
-    turn: getNextTurn({ game, playerIndex, roundIndex }),
+    turn: getNextTurn(game),
   };
 }
 
 /**
  * Gets the next turn in the game.
  */
-export function getNextTurn({
-  game,
-  playerIndex,
-  roundIndex,
-}: GetTurnArgs): GameTurn {
+export function getNextTurn(
+  game: Game,
+  { playerIndex, roundIndex }: GameTurn = game.turn,
+): GameTurn {
   // if we you are the last user in the roster, go back to the first user
   if (playerIndex === game.roster.length - 1) {
     return {
@@ -125,11 +120,10 @@ export function getNextTurn({
 /**
  * Gets the previous turn in the game.
  */
-export function getPreviousTurn({
-  game,
-  playerIndex,
-  roundIndex,
-}: GetTurnArgs): GameTurn {
+export function getPreviousTurn(
+  game: Game,
+  { playerIndex, roundIndex }: GameTurn = game.turn,
+): GameTurn {
   // if we you are the first user in the roster, go back to the last user
   if (playerIndex === 0) {
     return {

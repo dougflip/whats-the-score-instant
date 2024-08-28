@@ -52,7 +52,7 @@ export function GameScoreForm({
         onClick={() =>
           onPreviousClick({
             ...game,
-            turn: getPreviousTurn({ game, playerIndex, roundIndex }),
+            turn: getPreviousTurn(game),
           })
         }
       >
