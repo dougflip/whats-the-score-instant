@@ -10,12 +10,13 @@ export type Player = {
 export type Roster = Player[];
 
 export type Game = {
+  /**
+   * Initially, this will be an empty string, but assigned a value once saved to the db.
+   */
   id: string;
   roster: Roster;
   turn: GameTurn;
 };
-
-export type GameCreate = Omit<Game, "id">;
 
 /**
  * Represents a specific turn in a game.
@@ -38,7 +39,7 @@ export type GetTurnArgs = GameTurn & {
 /**
  * Creates a roster from a list of players.
  */
-export function createRoster(players: string[]): Roster {
+function createRoster(players: string[]): Roster {
   return players.map((name) => ({ name, scores: [] }));
 }
 
@@ -46,8 +47,9 @@ export function createRoster(players: string[]): Roster {
  * Creates a new game with the given players
  * and defaults the turn to the first player in the first round.
  */
-export function createGame(players: string[]): GameCreate {
+export function createGame(players: string[]): Game {
   return {
+    id: "",
     roster: createRoster(players),
     turn: { roundIndex: 0, playerIndex: 0 },
   };
@@ -145,8 +147,11 @@ export function getPreviousTurn({
 /**
  * Gets the score for the turn associated with the game.s
  */
-export function getScoreForTurn(game: Game): number | null {
-  const { playerIndex, roundIndex } = game.turn;
+export function getScoreForTurn(
+  game: Game,
+  turn: GameTurn = game.turn,
+): number | null {
+  const { playerIndex, roundIndex } = turn;
   return game.roster[playerIndex]?.scores[roundIndex] ?? null;
 }
 
@@ -166,5 +171,11 @@ export function mapScores<T>(
       roundIndex,
       game.roster.map((player) => player.scores[roundIndex] ?? null),
     ),
+  );
+}
+
+export function getScoreTotals(game: Game): number[] {
+  return game.roster.map((player) =>
+    player.scores.reduce((acc, score) => acc + (score ?? 0), 0),
   );
 }

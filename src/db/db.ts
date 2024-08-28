@@ -1,5 +1,6 @@
-import { Game, GameCreate } from "@/core/game/game";
 import { id, init, tx } from "@instantdb/react";
+
+import { Game } from "@/core/game/game";
 
 const APP_ID = "acddc6a6-5fad-43db-b9fc-9e29e476125c";
 
@@ -17,7 +18,7 @@ export function useGame(gameId: string) {
  * Creates and commits a new `Game` to the database.
  * Returns the created `Game`.
  */
-export function createGame(gameCreate: GameCreate): Game {
+export function createGame(gameCreate: Game): Game {
   const game: Game = {
     ...gameCreate,
     id: id(),
