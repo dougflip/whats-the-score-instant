@@ -1,6 +1,5 @@
+import { isNonNullish, isNullish, range } from "remeda";
 import { mapBy, setAt } from "@/utils/array";
-
-import { range } from "remeda";
 
 export type Player = {
   name: string;
@@ -167,7 +166,15 @@ export function mapScores<T>(
   const numRounds = Math.max(
     ...game.roster.map((player) => player.scores.length),
   );
-  return range(0, numRounds).map((roundIndex) =>
+
+  // include a blank row if
+  //  - all players have a score for the last round OR
+  //  - all players have a null score for the last round (basically an empty game)
+  const includeBlankRow =
+    game.roster.every((x) => isNonNullish(x.scores[numRounds - 1])) ||
+    game.roster.every((x) => isNullish(x.scores[numRounds - 1]));
+
+  return range(0, numRounds + (includeBlankRow ? 1 : 0)).map((roundIndex) =>
     mapFn(
       roundIndex,
       game.roster.map((player) => player.scores[roundIndex] ?? null),
