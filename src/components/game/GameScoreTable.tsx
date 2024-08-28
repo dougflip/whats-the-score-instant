@@ -39,20 +39,17 @@ export function GameScoreTable({
                     roundIndex === rIndex && playerIndex === sIndex,
                 })}
               >
-                {score === null && "--"}
-                {score !== null && (
-                  <button
-                    className="link"
-                    onClick={() =>
-                      onTurnClick(game, {
-                        roundIndex: rIndex,
-                        playerIndex: sIndex,
-                      })
-                    }
-                  >
-                    {score}
-                  </button>
-                )}
+                <button
+                  className="link"
+                  onClick={() =>
+                    onTurnClick(game, {
+                      roundIndex: rIndex,
+                      playerIndex: sIndex,
+                    })
+                  }
+                >
+                  {score ?? "--"}
+                </button>
               </td>
             ))}
           </tr>
