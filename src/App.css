@@ -1,13 +1,9 @@
 #root {
-  max-width: 1280px;
+  max-width: 600px;
   margin: 0 auto;
+  padding: 0 1rem;
   text-align: center;
 }
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+main {
+  margin: 1rem 0 0 0;
 }

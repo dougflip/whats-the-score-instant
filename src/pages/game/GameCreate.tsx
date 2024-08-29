@@ -1,6 +1,6 @@
 import * as db from "@/db/db";
 
-import { RosterCreateForm } from "@/components/game/GameCreateForm";
+import { GameCreateForm } from "@/components/game/GameCreateForm";
 import { createGame } from "@/core/game";
 import { useRouter } from "@tanstack/react-router";
 
@@ -12,5 +12,5 @@ export function GameCreate() {
     navigate({ to: `/games/${game.id}` });
   }
 
-  return <RosterCreateForm onSubmit={handleRosterSubmit} />;
+  return <GameCreateForm onSubmit={handleRosterSubmit} />;
 }

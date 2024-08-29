@@ -2,15 +2,15 @@ import { FormEvent, useState } from "react";
 
 import { setAt } from "@/utils/array";
 
-type RosterCreateFormProps = {
+type GameCreateFormProps = {
   players?: string[];
   onSubmit: (players: string[]) => void;
 };
 
-export function RosterCreateForm({
+export function GameCreateForm({
   players: initPlayers,
   onSubmit,
-}: RosterCreateFormProps) {
+}: GameCreateFormProps) {
   const [players, setPlayers] = useState(initPlayers ?? ["", "", "", ""]);
 
   function handleSubmit(e: FormEvent) {

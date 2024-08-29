@@ -1,26 +1,23 @@
 .game-score-table {
-  th {
-    text-align: center;
-  }
+  th,
   td {
     text-align: right;
   }
 }
 
-.game-score-table-empty-cell {
-  border: none;
-}
-
 .game-score-table-current-turn {
   background-color: #eee;
-  color: #333;
+  color: var(--pico-color);
 }
 
-.game-score-table-total-row {
-  background-color: #eee;
+tr.game-score-table-total-row {
+  background-color: var(--pico-contrast-background);
   color: #333;
+  border-top: 3px solid var(--pico-contrast-border);
+  border-bottom: none;
 }
 
 .game-score-table-total-cell {
   border-top: 1px solid #333;
+  background-color: var(--pico-contrast-background);
 }
