@@ -36,6 +36,7 @@ export function GameScoreForm({
       </h3>
       <div>
         <input
+          placeholder={`${game.roster[playerIndex].name}'s score`}
           required
           autoFocus
           type="number"

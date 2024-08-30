@@ -18,7 +18,7 @@ export function GameScoreTable({
   onTurnClick,
 }: GameScoreTableProps) {
   return (
-    <table className="game-score-table">
+    <table className="game-score-table striped">
       <thead>
         <tr>
           {game.roster.map((player) => (
