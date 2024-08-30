@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
 
+import { range } from "remeda";
 import { setAt } from "@/utils/array";
 
 type GameCreateFormProps = {
@@ -11,7 +12,9 @@ export function GameCreateForm({
   players: initPlayers,
   onSubmit,
 }: GameCreateFormProps) {
-  const [players, setPlayers] = useState(initPlayers ?? ["", "", "", ""]);
+  const [players, setPlayers] = useState(
+    initPlayers ?? range(0, 6).map(() => ""),
+  );
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -29,6 +32,7 @@ export function GameCreateForm({
             onChange={(e) =>
               setPlayers((data) => setAt(data, i, e.target.value))
             }
+            required={i === 0}
           />
         </div>
       ))}
