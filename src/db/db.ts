@@ -8,10 +8,24 @@ type Schema = {
   games: Game;
 };
 
+type UseGamesArgs = {
+  limit?: number;
+};
+
 export const db = init<Schema>({ appId: APP_ID });
 
+/**
+ * Fetches a `Game` by ID from the database.
+ */
 export function useGame(gameId: string) {
   return db.useQuery({ games: { $: { where: { id: gameId } } } });
+}
+
+/**
+ * Fetches a list of `Game`s from the database.
+ */
+export function useGames(args: UseGamesArgs = { limit: 10 }) {
+  return db.useQuery({ games: { $: args } });
 }
 
 /**
