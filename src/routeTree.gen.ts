@@ -10,40 +10,53 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as IndexImport } from "./routes/index";
-import { Route as GamesGameIdImport } from "./routes/games/$gameId";
+import { Route as rootRoute } from './routes/__root'
+import { Route as IndexImport } from './routes/index'
+import { Route as GamesIndexImport } from './routes/games/index'
+import { Route as GamesGameIdImport } from './routes/games/$gameId'
 
 // Create/Update Routes
 
 const IndexRoute = IndexImport.update({
-  path: "/",
+  path: '/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
+
+const GamesIndexRoute = GamesIndexImport.update({
+  path: '/games/',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const GamesGameIdRoute = GamesGameIdImport.update({
-  path: "/games/$gameId",
+  path: '/games/$gameId',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/games/$gameId": {
-      id: "/games/$gameId";
-      path: "/games/$gameId";
-      fullPath: "/games/$gameId";
-      preLoaderRoute: typeof GamesGameIdImport;
-      parentRoute: typeof rootRoute;
-    };
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/games/$gameId': {
+      id: '/games/$gameId'
+      path: '/games/$gameId'
+      fullPath: '/games/$gameId'
+      preLoaderRoute: typeof GamesGameIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/games/': {
+      id: '/games/'
+      path: '/games'
+      fullPath: '/games'
+      preLoaderRoute: typeof GamesIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -52,7 +65,8 @@ declare module "@tanstack/react-router" {
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
   GamesGameIdRoute,
-});
+  GamesIndexRoute,
+})
 
 /* prettier-ignore-end */
 
@@ -63,7 +77,8 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/games/$gameId"
+        "/games/$gameId",
+        "/games/"
       ]
     },
     "/": {
@@ -71,6 +86,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/games/$gameId": {
       "filePath": "games/$gameId.tsx"
+    },
+    "/games/": {
+      "filePath": "games/index.tsx"
     }
   }
 }
