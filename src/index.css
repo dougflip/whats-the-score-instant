@@ -7,6 +7,10 @@ button.link {
   color: #646cff;
 }
 
+button.danger {
+  background-color: #ee402e;
+}
+
 .text-small {
   font-size: 0.8rem;
   color: var(--pico-muted-color);
@@ -19,4 +23,9 @@ button.link {
 .my-3 {
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.mx-3 {
+  margin-left: 1rem;
+  margin-right: 1rem;
 }

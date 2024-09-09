@@ -48,3 +48,10 @@ export function updateGame(gameUpdate: Game): Game {
   db.transact(tx.games[gameUpdate.id].update(gameUpdate));
   return gameUpdate;
 }
+
+/**
+ * Deletes the `Game` with the given ID from the database.
+ */
+export function deleteGame(gameId: string) {
+  db.transact(tx.games[gameId].delete());
+}
