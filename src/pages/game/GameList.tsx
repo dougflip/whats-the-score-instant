@@ -6,6 +6,13 @@ export function GameList() {
   const { navigate } = useRouter();
   const games = db.useGames();
 
+  function handleDelete(gameId: string) {
+    // TODO: use a pico modal here instead
+    if (window.confirm("Are you sure you want to delete this game?")) {
+      db.deleteGame(gameId);
+    }
+  }
+
   if (games.isLoading) {
     return <div>Loading...</div>;
   }
@@ -31,6 +38,12 @@ export function GameList() {
                 </div>
               </td>
               <td className="text-right">
+                <button
+                  className="danger mx-3"
+                  onClick={() => handleDelete(game.id)}
+                >
+                  Delete
+                </button>
                 <button
                   onClick={() =>
                     navigate({
