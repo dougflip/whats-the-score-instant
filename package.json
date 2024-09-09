@@ -23,7 +23,7 @@
     "remeda": "^2.11.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.9.0",
+    "@eslint/js": "^9.10.0",
     "@tanstack/router-plugin": "^1.49.3",
     "@types/node": "^22.5.0",
     "@types/react": "^18.3.3",
