@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as GamesIndexImport } from './routes/games/index'
+import { Route as GamesCreateImport } from './routes/games/create'
 import { Route as GamesGameIdImport } from './routes/games/$gameId'
 
 // Create/Update Routes
@@ -24,6 +25,11 @@ const IndexRoute = IndexImport.update({
 
 const GamesIndexRoute = GamesIndexImport.update({
   path: '/games/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GamesCreateRoute = GamesCreateImport.update({
+  path: '/games/create',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -50,6 +56,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GamesGameIdImport
       parentRoute: typeof rootRoute
     }
+    '/games/create': {
+      id: '/games/create'
+      path: '/games/create'
+      fullPath: '/games/create'
+      preLoaderRoute: typeof GamesCreateImport
+      parentRoute: typeof rootRoute
+    }
     '/games/': {
       id: '/games/'
       path: '/games'
@@ -65,6 +78,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
   GamesGameIdRoute,
+  GamesCreateRoute,
   GamesIndexRoute,
 })
 
@@ -78,6 +92,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/games/$gameId",
+        "/games/create",
         "/games/"
       ]
     },
@@ -86,6 +101,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/games/$gameId": {
       "filePath": "games/$gameId.tsx"
+    },
+    "/games/create": {
+      "filePath": "games/create.tsx"
     },
     "/games/": {
       "filePath": "games/index.tsx"

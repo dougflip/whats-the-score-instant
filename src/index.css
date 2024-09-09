@@ -11,3 +11,12 @@ button.link {
   font-size: 0.8rem;
   color: var(--pico-muted-color);
 }
+
+.text-right {
+  text-align: right;
+}
+
+.my-3 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}

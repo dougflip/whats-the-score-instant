@@ -1,6 +1,8 @@
-import { GameCreate } from "@/pages/game/GameCreate";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
-  component: () => <GameCreate />,
+  component: function IndexRoute() {
+    const nav = useNavigate();
+    nav({ to: "/games" });
+  },
 });
