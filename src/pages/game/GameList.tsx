@@ -1,6 +1,6 @@
 import * as db from "@/db/db";
 
-import { useRouter } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 
 export function GameList() {
   const { navigate } = useRouter();
@@ -15,32 +15,37 @@ export function GameList() {
   }
 
   return (
-    <table>
-      <tbody>
-        {games.data.games.map((game) => (
-          <tr key={game.id}>
-            <td>
-              <div>{game.roster.map((x) => x.name).join(", ")}</div>
-              <div className="text-small">
-                Round: {game.turn.roundIndex},{" "}
-                {game.roster[game.turn.playerIndex].name}&apos;s turn
-              </div>
-            </td>
-            <td>
-              <button
-                onClick={() =>
-                  navigate({
-                    to: "/games/$gameId",
-                    params: { gameId: game.id },
-                  })
-                }
-              >
-                Play
-              </button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <>
+      <div className="text-right my-3">
+        <Link to="/games/create">+ New Game</Link>
+      </div>
+      <table>
+        <tbody>
+          {games.data.games.map((game) => (
+            <tr key={game.id}>
+              <td>
+                <div>{game.roster.map((x) => x.name).join(", ")}</div>
+                <div className="text-small">
+                  Round: {game.turn.roundIndex},{" "}
+                  {game.roster[game.turn.playerIndex].name}&apos;s turn
+                </div>
+              </td>
+              <td className="text-right">
+                <button
+                  onClick={() =>
+                    navigate({
+                      to: "/games/$gameId",
+                      params: { gameId: game.id },
+                    })
+                  }
+                >
+                  Play
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
   );
 }
