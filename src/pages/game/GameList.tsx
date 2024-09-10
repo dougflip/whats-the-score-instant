@@ -1,9 +1,9 @@
 import * as db from "@/db/db";
 
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
+import { TrashIcon } from "@/components/icons/TrashIcon";
 
 export function GameList() {
-  const { navigate } = useRouter();
   const games = db.useGames();
 
   function handleDelete(gameId: string) {
@@ -31,28 +31,24 @@ export function GameList() {
           {games.data.games.map((game) => (
             <tr key={game.id}>
               <td>
-                <div>{game.roster.map((x) => x.name).join(", ")}</div>
+                <div>
+                  <Link to="/games/$gameId" params={{ gameId: game.id }}>
+                    {game.roster.map((x) => x.name).join(", ")}
+                  </Link>
+                </div>
                 <div className="text-small">
-                  Round: {game.turn.roundIndex},{" "}
-                  {game.roster[game.turn.playerIndex].name}&apos;s turn
+                  <Link to="/games/$gameId" params={{ gameId: game.id }}>
+                    Round: {game.turn.roundIndex + 1},{" "}
+                    {game.roster[game.turn.playerIndex].name}&apos;s turn
+                  </Link>
                 </div>
               </td>
               <td className="text-right">
                 <button
-                  className="danger mx-3"
+                  className="danger"
                   onClick={() => handleDelete(game.id)}
                 >
-                  Delete
-                </button>
-                <button
-                  onClick={() =>
-                    navigate({
-                      to: "/games/$gameId",
-                      params: { gameId: game.id },
-                    })
-                  }
-                >
-                  Play
+                  <TrashIcon />
                 </button>
               </td>
             </tr>
