@@ -15,7 +15,7 @@
     "test:ci": "CI=1 TZ=UTC vitest run --coverage"
   },
   "dependencies": {
-    "@instantdb/react": "^0.12.37",
+    "@instantdb/react": "^0.14.0",
     "@tanstack/react-router": "^1.58.3",
     "classnames": "^2.5.1",
     "react": "^18.3.1",
