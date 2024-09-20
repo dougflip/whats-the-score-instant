@@ -75,12 +75,54 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({
-  IndexRoute,
-  GamesGameIdRoute,
-  GamesCreateRoute,
-  GamesIndexRoute,
-})
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/games/$gameId': typeof GamesGameIdRoute
+  '/games/create': typeof GamesCreateRoute
+  '/games': typeof GamesIndexRoute
+}
+
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/games/$gameId': typeof GamesGameIdRoute
+  '/games/create': typeof GamesCreateRoute
+  '/games': typeof GamesIndexRoute
+}
+
+export interface FileRoutesById {
+  __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/games/$gameId': typeof GamesGameIdRoute
+  '/games/create': typeof GamesCreateRoute
+  '/games/': typeof GamesIndexRoute
+}
+
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/games/$gameId' | '/games/create' | '/games'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/games/$gameId' | '/games/create' | '/games'
+  id: '__root__' | '/' | '/games/$gameId' | '/games/create' | '/games/'
+  fileRoutesById: FileRoutesById
+}
+
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  GamesGameIdRoute: typeof GamesGameIdRoute
+  GamesCreateRoute: typeof GamesCreateRoute
+  GamesIndexRoute: typeof GamesIndexRoute
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  GamesGameIdRoute: GamesGameIdRoute,
+  GamesCreateRoute: GamesCreateRoute,
+  GamesIndexRoute: GamesIndexRoute,
+}
+
+export const routeTree = rootRoute
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* prettier-ignore-end */
 
