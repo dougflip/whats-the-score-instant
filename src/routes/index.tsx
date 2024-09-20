@@ -1,8 +1,7 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
-  component: function IndexRoute() {
-    const nav = useNavigate();
-    nav({ to: "/games" });
+  beforeLoad: function () {
+    throw redirect({ to: "/games" });
   },
 });
